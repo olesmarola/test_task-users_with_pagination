@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getIsLoading, getUsers } from './store';
 import { setUsers } from './store/users';
 import { setIsLoading } from './store/isLoading';
-import { loadUsersFromServer } from '../api';
+import { loadUsersFromServer } from './api';
 import Pagination from './Pagination';
 import './App.scss';
 
