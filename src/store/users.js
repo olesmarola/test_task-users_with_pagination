@@ -1,5 +1,6 @@
 import { loadUsersFromServer } from '../api';
 import { setIsLoading } from './isLoading';
+import { setError } from './error';
 
 const SET_USERS = 'setUsers';
 
@@ -10,12 +11,19 @@ export const setUsers = users => ({
 
 export const loadUsers = () => {
   return async dispatch => {
-    dispatch(setIsLoading(true));
+    try {
+      dispatch(setIsLoading(true));
 
-    const usersFromServer = await loadUsersFromServer();
+      const usersFromServer = await loadUsersFromServer();
 
-    dispatch(setUsers(usersFromServer));
-    dispatch(setIsLoading(false));
+      dispatch(setUsers(usersFromServer));
+      dispatch(setIsLoading(false));
+    } catch (e) {
+      const errorMessage = e.message + '. Reload page and try again, please!';
+
+      dispatch(setIsLoading(false));
+      dispatch(setError(errorMessage));
+    }
   };
 };
 
