@@ -1,26 +1,53 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getIsLoading, getUsers } from './store';
+import { setUsers } from './store/users';
+import { setIsLoading } from './store/isLoading';
+import { loadUsersFromServer } from './api';
+import Pagination from './Pagination';
+import './App.scss';
 
-function App() {
+const App = ({ users, isLoading, setUsers, setIsLoading }) => {
+  const loadUsers = async () => {
+    setIsLoading(true);
+
+    const usersFromServer = await loadUsersFromServer();
+
+    setUsers(usersFromServer);
+    setIsLoading(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      {users.length > 0 ? (
+        <Pagination tableData={users} withInfo />
+      ) : (
+        <div className="post__start">
+          <button
+            disabled={isLoading}
+            className="post__button"
+            type="button"
+            onClick={loadUsers}
+          >
+            {isLoading ? 'Loading...' : 'Load Posts'}
+          </button>
+        </div>
+      )}
     </div>
   );
-}
+};
 
-export default App;
+const mapStateToProps = state => ({
+  users: getUsers(state),
+  isLoading: getIsLoading(state),
+});
+
+export default connect(mapStateToProps, { setUsers, setIsLoading })(App);
+
+App.propTypes = {
+  users: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  setUsers: PropTypes.func.isRequired,
+  setIsLoading: PropTypes.func.isRequired,
+};
