@@ -14,7 +14,7 @@ export default User;
 
 User.propTypes = {
   user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     surname: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,
