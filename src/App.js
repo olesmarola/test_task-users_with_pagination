@@ -6,6 +6,7 @@ import { setUsers } from './store/users';
 import { setIsLoading } from './store/isLoading';
 import { loadUsersFromServer } from './api';
 import Pagination from './Pagination';
+import 'materialize-css/dist/css/materialize.min.css';
 import './App.scss';
 
 const App = ({ users, isLoading, setUsers, setIsLoading }) => {
@@ -26,11 +27,12 @@ const App = ({ users, isLoading, setUsers, setIsLoading }) => {
         <div className="post__start">
           <button
             disabled={isLoading}
-            className="post__button"
+            className="waves-effect waves-light btn-large button__load"
             type="button"
             onClick={loadUsers}
           >
-            {isLoading ? 'Loading...' : 'Load Posts'}
+            {isLoading ? 'Loading...' : 'Load Users'}
+            <i className="material-icons right">cloud</i>
           </button>
         </div>
       )}

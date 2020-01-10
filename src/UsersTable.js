@@ -5,7 +5,7 @@ import { HEADERS } from './constants';
 
 const UsersTable = ({ users }) => {
   return (
-    <table className="users">
+    <table className="striped">
       <thead>
         <tr>
           {HEADERS.map(header => (

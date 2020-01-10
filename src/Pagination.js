@@ -37,60 +37,63 @@ const Pagination = ({ currentPage, setCurrentPage, tableData, withInfo }) => {
   return (
     <>
       <UsersTable users={tableData.slice(indexOfFirstItem, indexOfLastItem)} />
-      <ul className="pagination">
-        <li>
+      <div className="pagination__container">
+        <div>
           {withInfo && (
             <span className="pagination__info">
-              {`${indexOfFirstItem + 1}-${
+              {`From ${indexOfFirstItem + 1} to ${
                 indexOfLastItem > tableData.length
                   ? tableData.length
                   : currentPage * perPage
-              }`}
+              } of ${tableData.length}`}
             </span>
           )}
-        </li>
-        <li>
-          <button
-            type="button"
-            className={cn('pagination__page', {
-              'pagination__page--disabled': currentPage === startPage,
-            })}
-            onClick={goToPrevPage}
-            disabled={currentPage === startPage}
-          >
-            Previous
-          </button>
-        </li>
-
-        {pageNumbers.map(number => (
-          <li key={number}>
+        </div>
+        <ul className="pagination">
+          <li>
             <button
-              className={cn('pagination__page', {
-                'pagination__page--active': currentPage === number,
-              })}
               type="button"
-              key={number}
-              value={number}
-              onClick={handleClick}
+              className={cn('pagination__page', {
+                'pagination__page--disabled': currentPage === startPage,
+              })}
+              onClick={goToPrevPage}
+              disabled={currentPage === startPage}
             >
-              {number}
+              Previous
             </button>
           </li>
-        ))}
 
-        <li>
-          <button
-            type="button"
-            className={cn('pagination__page', {
-              'pagination__page--disabled': currentPage === pageNumbers.length,
-            })}
-            disabled={currentPage === pageNumbers.length}
-            onClick={goToNextPage}
-          >
-            Next
-          </button>
-        </li>
-      </ul>
+          {pageNumbers.map(number => (
+            <li key={number}>
+              <button
+                className={cn('pagination__page', {
+                  'pagination__page--active': currentPage === number,
+                })}
+                type="button"
+                key={number}
+                value={number}
+                onClick={handleClick}
+              >
+                {number}
+              </button>
+            </li>
+          ))}
+
+          <li>
+            <button
+              type="button"
+              className={cn('pagination__page', {
+                'pagination__page--disabled':
+                  currentPage === pageNumbers.length,
+              })}
+              disabled={currentPage === pageNumbers.length}
+              onClick={goToNextPage}
+            >
+              Next
+            </button>
+          </li>
+        </ul>
+      </div>
     </>
   );
 };
