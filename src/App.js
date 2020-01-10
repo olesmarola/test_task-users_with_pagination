@@ -2,21 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getIsLoading, getUsers } from './store';
-import { setUsers } from './store/users';
-import { setIsLoading } from './store/isLoading';
-import { loadUsersFromServer } from './api';
+import { loadUsers } from './store/users';
 import Pagination from './Pagination';
 import 'materialize-css/dist/css/materialize.min.css';
 import './App.scss';
 
-const App = ({ users, isLoading, setUsers, setIsLoading }) => {
-  const loadUsers = async () => {
-    setIsLoading(true);
-
-    const usersFromServer = await loadUsersFromServer();
-
-    setUsers(usersFromServer);
-    setIsLoading(false);
+const App = ({ users, isLoading, loadUsers }) => {
+  const loadUserTable = async () => {
+    await loadUsers();
   };
 
   return (
@@ -29,7 +22,7 @@ const App = ({ users, isLoading, setUsers, setIsLoading }) => {
             disabled={isLoading}
             className="waves-effect waves-light btn-large button__load"
             type="button"
-            onClick={loadUsers}
+            onClick={loadUserTable}
           >
             {isLoading ? 'Loading...' : 'Load Users'}
             <i className="material-icons right">cloud</i>
@@ -45,11 +38,10 @@ const mapStateToProps = state => ({
   isLoading: getIsLoading(state),
 });
 
-export default connect(mapStateToProps, { setUsers, setIsLoading })(App);
+export default connect(mapStateToProps, { loadUsers })(App);
 
 App.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object).isRequired,
   isLoading: PropTypes.bool.isRequired,
-  setUsers: PropTypes.func.isRequired,
-  setIsLoading: PropTypes.func.isRequired,
+  loadUsers: PropTypes.func.isRequired,
 };
